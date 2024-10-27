@@ -80,11 +80,11 @@ const Progress = () => {
       <View className={`rounded-2xl ml-2 mr-2 shadow-lg p-2 mb-2 flex-row ${getBalloonColor(item?.type)}`}>
         <View className="flex-col items-start justify-between">
           <View className="flex-row items-center space-x-2 ml-2">
-            <Text className='font-bold text-base'>{item?.description}</Text>
+            <Text className='font-textFontBase text-base text-amber-950'>{item?.description}</Text>
           </View>
           <View className='flex-row ml-2'>
-            <Text className='text-[12px]'>{item?.type} |</Text>
-            <Text className='text-[12px]'> Completed: {item?.completed.slice(0,10)} {item.completed?.slice(11,16)}</Text>
+            <Text className='text-[12px] italic text-amber-950'>{item?.type} |</Text>
+            <Text className='text-[12px] italic text-amber-950'> Completed: {item?.completed.slice(0,10)} {item.completed?.slice(11,16)}</Text>
           </View>
         </View>
       </View>

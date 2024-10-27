@@ -269,15 +269,15 @@ const handleConfirm = (item: Goal) => {
       </View>
 
       <View className='absolute top-[20%] mt-10  flex-row self-center'> 
-        <TouchableOpacity className={`p-1 ml-1 mr-2 ${goalPress ? "" : "opacity-40"}`} onPress={goalPressInstance}>
+        <TouchableOpacity className={`p-1 ml-1 mr-2 ${goalPress ? "border-b-2 rounded-xl border-green-400" : "opacity-40"}`} onPress={goalPressInstance}>
           <Text className='font-fatFont text-green-400 text-[20px]'>Goals</Text>
         </TouchableOpacity> 
 
-        <TouchableOpacity className={`p-1 ml-1 mr-2 ${editPress ? "" : "opacity-40"}`} onPress={editPressInstance}>
+        <TouchableOpacity className={`p-1 ml-1 mr-2 ${editPress ? "border-b-2 rounded-xl border-yellow-400" : "opacity-40"}`} onPress={editPressInstance}>
           <Text className='font-fatFont text-yellow-400 text-[20px]'>New Goal</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity className={`p-1 ml-1 mr-2 ${deletePress ? "" : "opacity-40"}`} onPress={deletePressInstance}>
+        <TouchableOpacity className={`p-1 ml-1 mr-2 ${deletePress ? "border-b-2 rounded-xl border-red-400" : "opacity-40"}`} onPress={deletePressInstance}>
           <Text className='font-fatFont text-red-400 text-[20px]'>Delete</Text>
         </TouchableOpacity>
       </View>
