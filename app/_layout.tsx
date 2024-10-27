@@ -1,37 +1,42 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
+import React, { useEffect } from 'react';
+import { View, Text } from 'react-native';
 import { Stack } from 'expo-router';
+import GlobalProvider from "../context/GlobalProvider";
+import { useFonts } from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+// Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+const RootLayout = () => {
+  const [loaded, error] = useFonts({
+    'bubbleFont': require('../assets/font/bubbleFontTwo.ttf'),
+    'balloonFont' : require('../assets/font/balloonFont.otf'),
+    'fatFont' : require('../assets/font/fatFont.ttf'),
+    'fattextFont' : require('../assets/font/fattextFont.ttf'),
+    'textFontBase' : require('../assets/font/textFontBase.ttf')
   });
 
   useEffect(() => {
-    if (loaded) {
+    if (loaded || error) {
+      // Hide the splash screen after the fonts have loaded (or an error was returned)
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, error]);
 
-  if (!loaded) {
+  // Prevent rendering until the font has loaded or an error was returned
+  if (!loaded && !error) {
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <GlobalProvider>
       <Stack>
+        <Stack.Screen name="index" options={{headerShown: false}} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
       </Stack>
-    </ThemeProvider>
+    </GlobalProvider>
   );
-}
+};
+
+export default RootLayout;
