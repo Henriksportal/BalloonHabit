@@ -120,18 +120,18 @@ const Progress = () => {
         </View>
 
         <View className='self-start flex-row mt-10'> 
-          <Text className='font-textFontBase ml-5 italic text-amber-950 self-center mr-7 opacity-75'>Your habit complition histroy</Text>
+          <Text className='font-textFontBase ml-5 italic text-amber-950 self-center mr-7 opacity-80'>Your habit complition histroy</Text>
         </View>
         {/* New Text components */}
         <View className='flex-row w-full justify-center mt-5 absolute top-[95%] '>
           <TouchableOpacity className='w-[30%] self-center m-4' onPress={handleDailyPress}>
-            <View className={`   ${dailyPress ? "opacity-100 border-b-4 border-amber-950 rounded-full" : "opacity-25"} rounded-lg`}>
-              <Text className='p-1 text-base  text-center font-fatFont text-amber-950'>This Week</Text>
+            <View className={`   ${dailyPress ? "opacity-100 border-b-4 border-amber-950 rounded-full" : ""} rounded-lg`}>
+              <Text className={`p-1 text-base  text-center font-fatFont ${dailyPress ? 'text-amber-950' : 'text-orange-200'}`}>This Week</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity className='w-[30%] self-center m-4' onPress={handleWeeklyPress}>
-            <View className={` ${weeklyPress ? "opacity-100 border-b-4 border-amber-950 rounded-full" : "opacity-25"} rounded-lg`}>
-              <Text className='p-1 text-base text-amber-950 text-center font-bold  font-fatFont'>All</Text>
+            <View className={` ${weeklyPress ? "opacity-100 border-b-4 border-amber-950 rounded-full" : ""} rounded-lg`}>
+              <Text className={`p-1 text-base  text-center font-fatFont ${weeklyPress ? 'text-amber-950' : 'text-orange-200'}`}>All</Text>
             </View>
           </TouchableOpacity>
         </View>

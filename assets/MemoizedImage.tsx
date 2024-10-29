@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Image, ImageSourcePropType } from 'react-native';
 
-const backgroundImage = require('./photo2.png');
+const backgroundImage = require('./bgimg.png');
 
 export const MemoizedBackgroundImage = React.memo(() => {
   const memoizedImage = useMemo(() => backgroundImage, []);

@@ -2,8 +2,6 @@ import { View, Text, StatusBar, TouchableOpacity, ScrollView, Animated, Easing, 
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'expo-router';
 import { router } from 'expo-router';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import BalloonSvg from '../../assets/svg/BalloonSvg';
 
 import { MemoizedBackgroundImage } from '../../assets/MemoizedImage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,6 +10,8 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import RenderHabitAlter from '../../components/RenderHabitAlter';
 import { format, isToday, startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO } from 'date-fns';
 import HeaderBalloonSvg from '@/assets/svg/HeaderBalloonSvg';
+import CountdownCheck from '@/components/CountdownCheck';
+
 
 
 
@@ -30,7 +30,7 @@ interface Habit {
 
 
 const Checklist = () => {
-  const danceparty = ['hello', 'yellow'];
+
   const ropeAnimation = useRef(new Animated.Value(0)).current;
   const [habitType, setHabitType] = useState<"Daily" | "Weekly" | "Monthly">("Daily")
   // const [totalCompleted, setTotalCompleted] = useState(0)
@@ -41,8 +41,10 @@ const Checklist = () => {
   const [balloonColor, setBalloonColor] = useState("bg-daily")
   const { goal, data, setData, refetchBalloon, refetch} = useGlobalContext();
   const [editPress, setEditPress] = useState(false)
+  const [showTime, setShowTime] = useState(true)
 
-  
+
+  console.log(data)
 
   const handleDailyPress = () => {
     setHabitType("Daily")
@@ -128,7 +130,6 @@ const Checklist = () => {
           updateBalloons(habit.type, habit.description);
           return {
             ...habit,
-            status: true,
             completed: habit.completed + 1,
             lastCompletedDate: new Date().toISOString(),
           };
@@ -152,23 +153,23 @@ const Checklist = () => {
     AsyncStorage.setItem('habits', JSON.stringify(updatedData));
   };
 
-  const handleConfirm = (item: Habit) => {
-    Alert.alert(
-      'Confirmation',
-      'Are you sure you want to proceed?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => null,
-        },
-        {
-          text: 'Yes',
-          onPress: () => handleDelete(item.id),
-        },
-      ],
-      { cancelable: false } // Prevent the dialog from closing on touch outside
-    );
-  };
+  // const handleConfirm = (item: Habit) => {
+  //   Alert.alert(
+  //     'Confirmation',
+  //     'Are you sure you want to proceed?',
+  //     [
+  //       {
+  //         text: 'Cancel',
+  //         onPress: () => null,
+  //       },
+  //       {
+  //         text: 'Yes',
+  //         onPress: () => handleDelete(item.id),
+  //       },
+  //     ],
+  //     { cancelable: false } // Prevent the dialog from closing on touch outside
+  //   );
+  // };
 
 
 
@@ -176,13 +177,16 @@ const Checklist = () => {
 
 
   const isLastCompletedInTimeframe = (item) => {
+
     if (!item?.lastCompletedDate) return false;
+    
     
     try {
       const lastCompletedDate = parseISO(item.lastCompletedDate);
       
       switch (item.type) {
         case 'Daily':
+         
           return isToday(lastCompletedDate);
         
         case 'Weekly': {
@@ -198,6 +202,7 @@ const Checklist = () => {
         }
         
         default:
+          
           return false;
       }
     } catch (error) {
@@ -220,7 +225,7 @@ const Checklist = () => {
       }
     };
     
-    console.log(item.description)
+    console.log(item.description, !isLastCompletedInTimeframe(item))
     if (!editPress &&  !isLastCompletedInTimeframe(item)){
    
       return (
@@ -238,7 +243,7 @@ const Checklist = () => {
       return (
         <View className=''>
          <View className={`rounded-2xl ml-2 mr-2 shadow-md p-4 mb-4  flex-row ${balloonColor} `}>
-            <RenderHabitAlter data={item} onDelete={() => handleConfirm(item)} />
+            <RenderHabitAlter data={item} onDelete={() => handleDelete(item.id)} />
           </View>
         </View>
       );
@@ -274,7 +279,7 @@ const Checklist = () => {
 
         {/* new seg */}
         <View className='self-start flex-row mt-5 '>  
-          <Text className='font-textFontBase ml-5 italic text-amber-950 opacity-75 self-center mr-2'>Double Click to complete a habit</Text>
+          <Text className='font-textFontBase ml-5 italic text-amber-950 opacity-80 self-center mr-2'>Double Click to complete a habit</Text>
           <View className='opacity-50'>          
               <Button title={`${!editPress ? "Edit" : "Done"}`} onPress={(() =>{
                 setEditPress(!editPress)
@@ -305,21 +310,34 @@ const Checklist = () => {
      
         </View>
         
-        <Animated.View className="h-[215%] w-full absolute top-[120%] self-center mt-10 ">
+        <Animated.View className="h-[200%] w-full absolute top-[120%] self-center mt-10">
         <FlatList
             data={data}
             renderItem={({ item }) => {
-            
+        
+              console.log(item, "batnab")
               if (item.goal === goal && item.type === habitType) {
                
                 return <Item item={item} />;
               }
+              
               return null; // Or render a different component if needed
             }}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
           />
         </Animated.View>
+
+{/*         
+        <View className='absolute top-[350%] self-center'>        
+          {showTime ? (
+          <CountdownCheck type={habitType}/>)
+        : (
+          <Text className='font-textFontBase text-amber-950 opacity-80'>No habits to check off</Text>
+        )}
+
+        </View> */}
+
         
       </View>
     </View>

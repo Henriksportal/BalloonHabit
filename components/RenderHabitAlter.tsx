@@ -1,8 +1,9 @@
-import { View, Text, Button, TouchableOpacity, TextInput, Keyboard  } from 'react-native'
+import { View, Text, Button, TouchableOpacity, TextInput, Keyboard, Alert  } from 'react-native'
 import React, {useRef, useState, useEffect} from 'react'
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 interface Habit {
   id: string;
@@ -20,6 +21,26 @@ const RenderHabitAlter = ({ data, onDelete }: { data: Habit; onDelete: () => voi
   const [text, setText] = useState(data.description);
   const inputRef = useRef<TextInput>(null);
 
+
+
+
+  const handleConfirm = () => {
+    Alert.alert(
+      'Confirmation',
+      'Are you sure you want to delete this habit?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+        },
+        {
+          text: 'Yes',
+          onPress: () => deleteHabit(),
+        },
+      ],
+      { cancelable: false } // Prevent the dialog from closing on touch outside
+    );
+  };
 
 
   const deleteHabit = async () => {
@@ -40,6 +61,7 @@ const RenderHabitAlter = ({ data, onDelete }: { data: Habit; onDelete: () => voi
     <View className='w-full'>
       <View className='self-start mb-2'>
         <TextInput
+          className='font-textFontBase text-red-600'
           ref={inputRef}
           value={text}
           onChangeText={setText}
@@ -47,13 +69,13 @@ const RenderHabitAlter = ({ data, onDelete }: { data: Habit; onDelete: () => voi
           style={{fontSize:20, fontWeight: "bold",}} 
         />
       </View>
-      <Text className='text-[12px] '>Started: {data.createdAt.slice(0,10)}</Text>
+      <Text className='font-ta text-amber-950'>Started: {data.createdAt.slice(0,10)}</Text>
      
       <View className='flex-row absolute right-0'>
       
 
-        <TouchableOpacity onPress={deleteHabit} className='p-2 justify-end'>
-          <FontAwesome5 name="trash" size={24} color="black" />
+        <TouchableOpacity onPress={handleConfirm} className='mt-8 justify-end'>
+          <FontAwesome5 name="trash" size={18} color="rgb(239 68 68)" />
         </TouchableOpacity>
       </View>
     </View>

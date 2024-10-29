@@ -14,8 +14,8 @@ interface BasketBalloonSvgProps {
 }
 
 const BasketBalloonNoRope: React.FC<BasketBalloonSvgProps> = ({ 
-  width = 30, 
-  height = 90, 
+  width = 100, 
+  height = 100, 
   color = '#000000', 
   transform = "rotate(0)", 
   style,
@@ -43,7 +43,7 @@ const BasketBalloonNoRope: React.FC<BasketBalloonSvgProps> = ({
       <G>
         <Path
           fill={color}
-          stroke={'black'}
+          // stroke={'black'}
           d="M256.007,0C170.213,0,102.569,65.824,106.25,169.118c3.843,107.508,80.015,174.195,130.395,188.945
           l-14.211,26.225h67.132l-14.204-26.225c50.373-14.744,126.559-81.424,130.388-188.945C409.444,65.824,341.786,0,256.007,0z
           M221.274,84.154c-6.121,3.573-11.69,7.928-16.598,13.018c-10.813,11.218-18.444,25.49-22.597,42.856

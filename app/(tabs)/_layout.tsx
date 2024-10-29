@@ -15,7 +15,7 @@ const TabsLayout = () => {
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: 'rgb(69 26 3)',
-          tabBarInactiveTintColor: 'white',
+          tabBarInactiveTintColor: 'rgb(254 215 170)',
           tabBarStyle: { backgroundColor: 'transparent', borderColor: 'transparent', borderBlockColor: 'transparent', position: 'absolute' },
           headerShown: false,
           tabBarLabelStyle: {
@@ -49,6 +49,9 @@ const TabsLayout = () => {
           name="createhabit"
           options={{
             href:null, 
+            tabBarStyle: {
+              display: "none",
+            },
             title: 'Create Habit',
             tabBarIcon: ({ color }) => <MaterialCommunityIcons name="plus-circle-outline" size={24} color={color} />,
           }}

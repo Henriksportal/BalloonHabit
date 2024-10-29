@@ -269,16 +269,16 @@ const handleConfirm = (item: Goal) => {
       </View>
 
       <View className='absolute top-[20%] mt-10  flex-row self-center'> 
-        <TouchableOpacity className={`p-1 ml-1 mr-2 ${goalPress ? "border-b-2 rounded-xl border-green-400" : "opacity-40"}`} onPress={goalPressInstance}>
-          <Text className='font-fatFont text-green-400 text-[20px]'>Goals</Text>
+        <TouchableOpacity className={`p-1 ml-1 mr-2 ${goalPress ? "border-b-4 rounded-xl border-amber-950" : ""}`} onPress={goalPressInstance}>
+          <Text className={`font-fatFont text-[20px] ${goalPress ? "text-amber-950 " : "text-orange-200"}`}>Goals</Text>
         </TouchableOpacity> 
 
-        <TouchableOpacity className={`p-1 ml-1 mr-2 ${editPress ? "border-b-2 rounded-xl border-yellow-400" : "opacity-40"}`} onPress={editPressInstance}>
-          <Text className='font-fatFont text-yellow-400 text-[20px]'>New Goal</Text>
+        <TouchableOpacity className={`p-1 ml-1 mr-2 ${editPress ? "border-b-4 rounded-xl border-amber-950" : ""}`} onPress={editPressInstance}>
+          <Text className={`font-fatFont  text-[20px] ${editPress ? "text-amber-950" : "text-orange-200"}`}>New Goal</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity className={`p-1 ml-1 mr-2 ${deletePress ? "border-b-2 rounded-xl border-red-400" : "opacity-40"}`} onPress={deletePressInstance}>
-          <Text className='font-fatFont text-red-400 text-[20px]'>Delete</Text>
+        <TouchableOpacity className={`p-1 ml-1 mr-2 ${deletePress ? "border-b-4 rounded-xl border-red-500" : ""}`} onPress={deletePressInstance}>
+          <Text className={`font-fatFont  text-[20px] ${deletePress ? "text-red-500" : "text-orange-200"}`}>Delete</Text>
         </TouchableOpacity>
       </View>
       

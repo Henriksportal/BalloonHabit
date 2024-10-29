@@ -8,6 +8,10 @@ import { MemoizedBackgroundImage } from '../../assets/MemoizedImage';
 import { useGlobalContext } from "../../context/GlobalProvider";
 import BasketBalloonSvg from '@/assets/svg/BasketBalloonSvg';
 import HeaderBalloonSvg from '@/assets/svg/HeaderBalloonSvg';
+import CreateHabitBalloonSvg from '@/assets/svg/CreateHabitBalloonSvg';
+import BasketBalloonNoRope from '@/assets/svg/BasketBalloonNoRope';
+
+
 
 type BalloonType = 'Daily' | 'Weekly' | 'Monthly' | null;
 
@@ -16,7 +20,7 @@ const CreateHabit = () => {
  
   const router = useRouter();
   const ropeAnimation = useRef(new Animated.Value(0)).current;
-  const [selectedBalloon, setSelectedBalloon] = useState<BalloonType>(null);
+  const [selectedBalloon, setSelectedBalloon] = useState<BalloonType>("Daily");
   const [selectedBalloonButton, setSelectedBalloonButton] = useState("");
   const [selectedBalloonColor, setselectedBalloonColor] = useState("")
   const [buttonSelectedToday, setButtonSelectedToday] = useState(true)
@@ -109,10 +113,10 @@ const CreateHabit = () => {
       startDate: startDate.toISOString(),
       createdAt: new Date().toISOString(),
       goal: goal,
-      status: false,
       popped: 0,
       completed: 0,
       lastCompletedDate: null,  
+      lastPoppedDate: null, 
     };
 
     try {
@@ -180,10 +184,10 @@ const CreateHabit = () => {
             <TouchableOpacity key={type} onPress={() => handleBalloonPress(type)} className='items-center'>
               <Text className={`font-fatFont text-${getBalloonColor(type, true)} ${selectedBalloon === type ? null: 'opacity-40'} ` }>{type}</Text>
               {selectedBalloon === type ? (
-                <BalloonSvg ropeAnimation={ropeAnimation} style={{ width: 100, height: 100}}  color={getBalloonColor(type, false)} />
+                <BasketBalloonNoRope ropeAnimation={ropeAnimation} style={{ width: 100, height: 100}}  color={getBalloonColor(type, false)} />
               ) : (
                 <View style={{ borderRadius: 50, overflow: 'hidden' }} className='opacity-40'>
-                  <BalloonSvg ropeAnimation={ropeAnimation} style={{ width: 100, height: 100 }} color={getBalloonColor(type, false)} />
+                  <BasketBalloonNoRope ropeAnimation={ropeAnimation} style={{ width: 100, height: 100 }} color={getBalloonColor(type, false)} />
                 </View>
               )}
             </TouchableOpacity>
@@ -192,25 +196,26 @@ const CreateHabit = () => {
         
         {selectedBalloon && (
           <View className='mt-5'>
-            <Text className='mb-4 italic font-textFontBase text-amber-950'>Write your {selectedBalloon.toLowerCase()} habit:</Text>
+            <Text className='italic font-textFontBase text-amber-950 opacity-80'>Write your {selectedBalloon.toLowerCase()} habit:</Text>
             <TextInput
-              className='border-b-4 border-amber-950 rounded-lg p-2 h-[15%] text-base font-textFontBase text-amber-950'
+              className='border-b-2 border-amber-950 rounded-lg p-2 h-[15%] text-base font-textFontBase text-amber-950'
               placeholderTextColor="#161616" 
               value={habitText}
               onChangeText={setHabitText}
+              maxLength={45}
             />  
-            <Text className='mt-10  italic font-textFontBase text-amber-950'>When do you want to start tracking the habit?</Text>
+            <Text className='mt-10  italic font-textFontBase text-amber-950 opacity-80'>When do you want to start tracking the habit?</Text>
             <View className='mt-5 flex-row pb-5'>
-              <TouchableOpacity onPress={handleSelectorPress} className={`ml-12  p-2 rounded-lg ${buttonSelectedToday ? `border-4 border-amber-950` : null } black`}>
+              <TouchableOpacity onPress={handleSelectorPress} className={`ml-12 mt-5 p-2 rounded-lg ${buttonSelectedToday ? `border-4 border-amber-950` : null } black`}>
                 <Text className={`${buttonSelectedToday ? "font-textFontBase" : null } font-textFontBase text-amber-950`}> Today</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={handleSelectorPressTwo} className={`ml-10 p-2 rounded-lg  border-black ${buttonSelectedNext ? "border-4 border-amber-950" : null }`}>
+              <TouchableOpacity onPress={handleSelectorPressTwo} className={`ml-10 mt-5 p-2 rounded-lg  border-black ${buttonSelectedNext ? "border-4 border-amber-950" : null }`}>
                 <Text className={`${!buttonSelectedToday ? "font-textFontBase" : null } font-textFontBase text-amber-950`}>{selectedBalloonButton}</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={saveHabit} className={`mt-2 shadow-xl rounded-full w-[50%] self-center`}>
+            <TouchableOpacity onPress={saveHabit} className={`mt-5 shadow-xl rounded-full w-[50%] self-center`}>
               
-              <Text className={`text-5xl font-balloonFont space- p-2 self-center ${selectedBalloonColor}`}>Create</Text>
+              <Text className={`text-5xl font-balloonFont  p-2 self-center ${selectedBalloonColor}`}>Create</Text>
 
             </TouchableOpacity>
           </View>
