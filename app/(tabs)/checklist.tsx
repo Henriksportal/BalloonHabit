@@ -44,7 +44,7 @@ const Checklist = () => {
   const [showTime, setShowTime] = useState(true)
 
 
-  console.log(data)
+  console.log(data, '------------------------ \n ------------------')
 
   const handleDailyPress = () => {
     setHabitType("Daily")
@@ -315,7 +315,7 @@ const Checklist = () => {
             data={data}
             renderItem={({ item }) => {
         
-              console.log(item, "batnab")
+              console.log(item.description, item.goal, "baba")
               if (item.goal === goal && item.type === habitType) {
                
                 return <Item item={item} />;
@@ -328,17 +328,7 @@ const Checklist = () => {
           />
         </Animated.View>
 
-{/*         
-        <View className='absolute top-[350%] self-center'>        
-          {showTime ? (
-          <CountdownCheck type={habitType}/>)
-        : (
-          <Text className='font-textFontBase text-amber-950 opacity-80'>No habits to check off</Text>
-        )}
-
-        </View> */}
-
-        
+      
       </View>
     </View>
   );

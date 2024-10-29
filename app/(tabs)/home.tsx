@@ -23,9 +23,9 @@ const Home = () => {
 
   const calculateBalloonSize = () => {
     const minSize = 40; // Minimum balloon size
-    const maxSize = 800; // Maximum balloon size
+    const maxSize = 380; // Maximum balloon size
     const baseSize = 0; // Starting size
-    const growthFactor = 1.5; // How much to grow per item in array
+    const growthFactor = 2; // How much to grow per item in array
     
     if (!balloonArray[goal] || balloonArray[goal].length === 0) {
       return minSize;
@@ -157,24 +157,23 @@ const Home = () => {
         <Text className='text-base top-[4%] font-textFontBase mt-5 italic text-amber-950 '>Habit Completions</Text>
       </View>
       {balloonArray[goal]?.length > 0 ?(
-      <View className='absolute bottom-[20%] z-11 self-center rounded-full'>
+      <View className='absolute bottom-[21%] z-11 self-center rounded-full'>
         <BalloonString height={100} width={100} />       
       </View>
       ) : null}
-      <View className='absolute bottom-[22.7%] self-center opacity-90 z-11 '>
+       {balloonArray[goal]?.length > 0 ?(
+      <View className='absolute bottom-[23%] self-center  z-11 '>
           <DogBalloonSvg height={calculateBalloonSize()} width={calculateBalloonSize()} />
+          {/* <DoggoSvg width={40} height={40}/> */}
       </View>
+         ) : null}
 
-      <View className='absolute top-[25%] self-center rounded-lg'>
+
+          <View className='absolute  self-center top-[78%] '>
+        <DoggoSvg width={40} height={40}/>
+          </View>
         
-        <Animated.View style={{
-          transform: [{ rotate: swayInterpolation }],
-          alignSelf: 'center'
-        }}>
-
-          <DoggoSvg width={40}/>
-        </Animated.View>
-      </View>
+   
     </View>
   );
 };

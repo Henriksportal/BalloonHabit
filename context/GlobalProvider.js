@@ -17,9 +17,9 @@ const GlobalProvider = ({ children }) => {
 
   
     const popCalculator = (habit) => {
-      console.log("here now")
+
       if (isToday(habit.lastPoppedDate) || !habit.lastCompletedDate) return false;
-      console.log("here now 2")
+      
         try {
           const today = new Date()
 
@@ -82,7 +82,7 @@ const GlobalProvider = ({ children }) => {
             }
           
           });   
-          console.log(updatedData, "checking this ")
+         
           setData(updatedData);
           await AsyncStorage.setItem('habits', JSON.stringify(updatedData));
           refetchBalloon();
@@ -142,7 +142,8 @@ const GlobalProvider = ({ children }) => {
 
     const refetch = () => getData();
     const refetchBalloon = () => fetchBalloons();
-   
+    const reCheckPopped = () => checkPop();
+
     return (
         <GlobalContext.Provider
           value={{

@@ -8,7 +8,7 @@ import { MemoizedBackgroundImage } from '../../assets/MemoizedImage';
 import { useGlobalContext } from "../../context/GlobalProvider";
 import BasketBalloonSvg from '@/assets/svg/BasketBalloonSvg';
 import HeaderBalloonSvg from '@/assets/svg/HeaderBalloonSvg';
-import CreateHabitBalloonSvg from '@/assets/svg/CreateHabitBalloonSvg';
+
 import BasketBalloonNoRope from '@/assets/svg/BasketBalloonNoRope';
 
 
@@ -130,7 +130,7 @@ const CreateHabit = () => {
       
       // Use spread operator to create a new array with the existing habits and the new habit
       const updatedHabits = [...habits, habit];
-      
+    
       await AsyncStorage.setItem('habits', JSON.stringify(updatedHabits));
       Alert.alert("Success", "Habit created successfully!");
       setHabitText("");

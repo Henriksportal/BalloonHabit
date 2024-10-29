@@ -8,6 +8,7 @@ module.exports = {
           'weekly' : '#ffa164',
           'monthly' : '#2196F3'
         },
+        //#2196F3
         fontFamily: {
           bubbleFont: ['bubbleFont'],
           balloonFont: ['balloonFont'],

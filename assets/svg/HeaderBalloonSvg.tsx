@@ -10,7 +10,7 @@ interface HeaderBalloonSvgProps {
   mainColor?: string;
 }
 
-const HeaderBalloonSvg: React.FC<HeaderBalloonSvgProps> = ({ style, mainColor = "rgb(252 165 165)" }) => {
+const HeaderBalloonSvg: React.FC<HeaderBalloonSvgProps> = ({ style, mainColor = "#ed4c5c" }) => {
 //   const animatedStyle = {
 //     transform: [
 //       {
