@@ -56,14 +56,7 @@ const TabsLayout = () => {
             tabBarIcon: ({ color }) => <MaterialCommunityIcons name="plus-circle-outline" size={24} color={color} />,
           }}
         />
-        <Tabs.Screen
-          name="edithabit"
-          options={{
-            href: null,
-            title: 'Edit Habit',
-            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="pencil" size={24} color={color} />,
-          }}
-        />
+
         <Tabs.Screen
           name="stats"
           options={{

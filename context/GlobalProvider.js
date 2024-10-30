@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import {isToday, differenceInDays , isYesterday, subWeeks, endOfWeek, subMonths, endOfMonth, parseISO } from 'date-fns';
+import {isToday, differenceInDays ,startOfWeek, isYesterday, subWeeks, endOfWeek, subMonths, endOfMonth, parseISO } from 'date-fns';
 
 const GlobalContext = createContext();
 
@@ -18,37 +18,39 @@ const GlobalProvider = ({ children }) => {
   
     const popCalculator = (habit) => {
 
-      if (isToday(habit.lastPoppedDate) || !habit.lastCompletedDate) return false;
+      if (isToday(habit.lastPoppedDate)) return false;
       
         try {
           const today = new Date()
-
+          setPoppedCount(0)
           const lastCompletedDate = habit.lastCompletedDate
           ? parseISO(habit.lastCompletedDate)
           : parseISO(habit.startDate);
         
-          //console.log(lastCompletedDate, "checking this variable ", habit.type)
-      
           switch (habit.type) {
             case 'Daily':
               console.log("am i here check 2", isYesterday(lastCompletedDate))
-              setPoppedCount(differenceInDays(today, habit.lastPoppedDate))
+              setPoppedCount(
+                habit.lastPoppedDate ? differenceInDays(today, habit.lastPoppedDate) : 1
+              );
               return isYesterday(lastCompletedDate);
 
       
             case 'Weekly': {
-              const lastWeekStart = subWeeks(new Date(), 1);
+              const lastWeekStart = startOfWeek(subWeeks(today, 1), { weekStartsOn: 0 });
               const lastWeekEnd = endOfWeek(lastWeekStart);
-              setPoppedCount(differenceInDays(today, habit.lastPoppedDate))
-
+              setPoppedCount(
+                habit.lastPoppedDate ? differenceInDays(today, habit.lastPoppedDate) : 1
+              );
               return lastCompletedDate >= lastWeekStart && lastCompletedDate <= lastWeekEnd;
             }
       
             case 'Monthly': {
               const lastMonthStart = subMonths(new Date(), 1);
               const lastMonthEnd = endOfMonth(lastMonthStart);
-              setPoppedCount(differenceInDays(today, habit.lastPoppedDate))
-
+              setPoppedCount(
+                habit.lastPoppedDate ? differenceInDays(today, habit.lastPoppedDate) : 1
+              );
               return lastCompletedDate >= lastMonthStart && lastCompletedDate <= lastMonthEnd;
             }
       
@@ -69,7 +71,7 @@ const GlobalProvider = ({ children }) => {
           const updatedData = habitData.map((habit: Habit) => {
             
             if (popCalculator(habit)) {
-              console.log("is this the case")
+              console.log("is this the case", poppedCount)
               return {
                 ...habit,
                 status: false,
@@ -107,7 +109,7 @@ const GlobalProvider = ({ children }) => {
         const habitsValue = await AsyncStorage.getItem('habits');
         if (habitsValue !== null) {
           const habits = JSON.parse(habitsValue);
-          // console.log(habits, "0000000000")
+        
           setData(habits);
           checkPop(habits)
       

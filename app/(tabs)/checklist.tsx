@@ -44,7 +44,7 @@ const Checklist = () => {
   const [showTime, setShowTime] = useState(true)
 
 
-  console.log(data, '------------------------ \n ------------------')
+  // console.log(data, '------------------------ \n ------------------')
 
   const handleDailyPress = () => {
     setHabitType("Daily")
@@ -314,8 +314,7 @@ const Checklist = () => {
         <FlatList
             data={data}
             renderItem={({ item }) => {
-        
-              console.log(item.description, item.goal, "baba")
+    
               if (item.goal === goal && item.type === habitType) {
                
                 return <Item item={item} />;
