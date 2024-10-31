@@ -1,9 +1,9 @@
-import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, FlatList, Alert, FlatListComponent, Button } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, FlatList, Alert, Button, ImageBackground } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useGlobalContext } from "../context/GlobalProvider";
 import { router } from 'expo-router'
-import Feather from '@expo/vector-icons/Feather';
+
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import ColoredText from '@/components/ColoredText';
@@ -232,8 +232,14 @@ const handleConfirm = (item: Goal) => {
   }
 
   return (
-    <View className='flex-1'>
-      <ScrollView bounces={false}
+
+    <ImageBackground
+      source={require('./../assets/bgSky.png')}
+      className='flex-1'
+      resizeMode='cover'>
+   {/* <View className='flex-1'> */}
+      
+      {/* <ScrollView bounces={false}
       style={{ transform: [{ scaleY: -1 }] }}
       showsVerticalScrollIndicator={false}>
         <Image
@@ -242,7 +248,7 @@ const handleConfirm = (item: Goal) => {
           className="bottom-10 right-80 flex-1" 
           resizeMode='cover'
         />
-      </ScrollView>
+      </ScrollView> */}
 
       <View className='absolute self-center top-[10%] mt-5'>
         {/* <Text className='text-[36px] font-fatFont'>Habit Balloon</Text> */}
@@ -286,7 +292,8 @@ const handleConfirm = (item: Goal) => {
     {/* <View className='absolute bottom-20'>
       <Button title="reset all data" onPress={clearAsyncStorage} />
     </View> */}
-    </View>
+    {/* </View> */}
+    </ImageBackground>
   )
 }
 

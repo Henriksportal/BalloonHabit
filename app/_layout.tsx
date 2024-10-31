@@ -4,6 +4,9 @@ import { Stack } from 'expo-router';
 import GlobalProvider from "../context/GlobalProvider";
 import { useFonts } from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
+import "./../global.css"
+
+
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -28,14 +31,15 @@ const RootLayout = () => {
   if (!loaded && !error) {
     return null;
   }
-
   return (
-    <GlobalProvider>
-      <Stack>
-        <Stack.Screen name="index" options={{headerShown: false}} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </GlobalProvider>
+   
+      <GlobalProvider>
+        <Stack>
+          <Stack.Screen name="index" options={{headerShown: false}} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </GlobalProvider>
+ 
   );
 };
 

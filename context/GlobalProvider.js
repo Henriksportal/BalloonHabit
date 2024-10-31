@@ -13,9 +13,7 @@ const GlobalProvider = ({ children }) => {
     const [balloonArray, setBalloonArray] = useState([])
     const [poppedCount, setPoppedCount] = useState(1)
 
-  
 
-  
     const popCalculator = (habit) => {
 
       if (isToday(habit.lastPoppedDate)) return false;

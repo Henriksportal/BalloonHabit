@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity, ScrollView, Animated, Easing, FlatList, Button, Alert, Switch } from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity, ImageBackground, Animated, Easing, FlatList, Button, Alert, Switch } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'expo-router';
 import { router } from 'expo-router';
@@ -153,27 +153,6 @@ const Checklist = () => {
     AsyncStorage.setItem('habits', JSON.stringify(updatedData));
   };
 
-  // const handleConfirm = (item: Habit) => {
-  //   Alert.alert(
-  //     'Confirmation',
-  //     'Are you sure you want to proceed?',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => null,
-  //       },
-  //       {
-  //         text: 'Yes',
-  //         onPress: () => handleDelete(item.id),
-  //       },
-  //     ],
-  //     { cancelable: false } // Prevent the dialog from closing on touch outside
-  //   );
-  // };
-
-
-
-
 
 
   const isLastCompletedInTimeframe = (item) => {
@@ -251,13 +230,17 @@ const Checklist = () => {
   };
 
   return (
-    <View className='flex-1'>
+    // <View className='flex-1'>
+    <ImageBackground
+    source={require('./../../assets/bgSky.png')}
+    className='flex-1'
+    resizeMode='cover'>
       {/* BackGround Image  */}
-      <ScrollView bounces={false}
+      {/* <ScrollView bounces={false}
       style={{ transform: [{ scaleY: -1 }] }}
       showsVerticalScrollIndicator={false}>
         <MemoizedBackgroundImage />
-      </ScrollView>
+      </ScrollView> */}
       {/* BackGround Image End */}
 
       {/* Header Text  */}
@@ -329,7 +312,8 @@ const Checklist = () => {
 
       
       </View>
-    </View>
+    {/* </View> */}
+    </ImageBackground>
   );
 };
 

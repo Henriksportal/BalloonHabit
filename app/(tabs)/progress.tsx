@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity, ScrollView, Image, Animated, Easing, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, ImageBackground, Image, Animated, Easing, FlatList } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { startOfWeek, endOfWeek, parseISO } from 'date-fns';
+
 
 type BalloonType = 'Daily' | 'Weekly' | 'Monthly';
 
@@ -92,9 +93,14 @@ const Progress = () => {
   };
 
   return (
-    <View className='flex-1'>
+
+    <ImageBackground
+    source={require('./../../assets/bgSky.png')}
+    className='flex-1'
+    resizeMode='cover'>
+     {/* <View className='flex-1'> */}
       {/* BackGround Image  */}
-      <ScrollView 
+      {/* <ScrollView 
         bounces={false}
         style={{ transform: [{ scaleY: -1 }] }}
         showsVerticalScrollIndicator={false}
@@ -105,7 +111,7 @@ const Progress = () => {
           className="bottom-10 right-80 flex-1"
           resizeMode='cover'
         />
-      </ScrollView>
+      </ScrollView> */}
       {/* BackGround Image End */}
 
       {/* Header Text  */}
@@ -154,7 +160,8 @@ const Progress = () => {
           />
         </View>
       </View>
-    </View>
+    {/* </View> */}
+    </ImageBackground>
   );
 };
 

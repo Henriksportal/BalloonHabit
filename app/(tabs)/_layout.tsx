@@ -56,15 +56,6 @@ const TabsLayout = () => {
             tabBarIcon: ({ color }) => <MaterialCommunityIcons name="plus-circle-outline" size={24} color={color} />,
           }}
         />
-
-        <Tabs.Screen
-          name="stats"
-          options={{
-            href: null,
-            title: 'Stats',
-            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="chart-bar" size={24} color={color} />,
-          }}
-        />
       </Tabs>
     </>
   )
