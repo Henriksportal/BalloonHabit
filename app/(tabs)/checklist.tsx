@@ -108,7 +108,7 @@ const Checklist = () => {
         balloons[goal] = [];
       }
 
-      // balloons[goal].push(type);
+     
       balloons[goal].push({
         type: type,
         completed: new Date(),
@@ -232,7 +232,7 @@ const Checklist = () => {
   return (
     // <View className='flex-1'>
     <ImageBackground
-    source={require('./../../assets/bgSky.png')}
+    source={require('./../../assets/backgroundsvg.png')}
     className='flex-1'
     resizeMode='cover'>
       {/* BackGround Image  */}

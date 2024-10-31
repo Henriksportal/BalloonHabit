@@ -95,7 +95,7 @@ const Progress = () => {
   return (
 
     <ImageBackground
-    source={require('./../../assets/bgSky.png')}
+    source={require('./../../assets/backgroundsvg.png')}
     className='flex-1'
     resizeMode='cover'>
      {/* <View className='flex-1'> */}

@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity, ScrollView, Animated, Easing, StyleSheet, Button  } from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity, ScrollView, Animated, Easing, Image, ImageBackground  } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'expo-router';
 import { router } from 'expo-router';
@@ -13,41 +13,53 @@ import DoggoSvg from '../../assets/svg/doggo';
 import DogBalloonSvg from '../../assets/svg/dogBalloon';
 import BalloonString from '@/assets/svg/BalloonString';
 
-
 const Home = () => {
   const danceparty = ['hello', 'yellow'];
   const ropeAnimation = useRef(new Animated.Value(0)).current;
   const swayAnimation = useRef(new Animated.Value(0)).current;
-  const { goal, data, balloonArray, checkPop, refetch } = useGlobalContext();
+  const { goal, data, balloonArray, poppedBalloonArray } = useGlobalContext();
   const scrollViewRef = useRef<ScrollView>(null);
+  const [lift, setLift] = useState(0)
 
   const calculateBalloonSize = () => {
     const minSize = 40; // Minimum balloon size
-    const maxSize = 380; // Maximum balloon size
-    const baseSize = 0; // Starting size
-    const growthFactor = 2; // How much to grow per item in array
+    const maxSize = 250; // Maximum balloon size
     
-    if (!balloonArray[goal] || balloonArray[goal].length === 0) {
-      return minSize;
+    if (lift >= 80) {
+      // Calculate the percentage between 80 and 100
+      const percentage = ((lift - 80) / 20) * 100;
+      // Apply the percentage to maxSize
+      return (percentage / 100) * maxSize;
     }
     
-    const calculatedSize = baseSize + (balloonArray[goal].length * growthFactor);
-    return Math.min(Math.max(calculatedSize, minSize), maxSize);
+    return minSize;
   };
 
-  const getAllData = async () => {
-    try {
-      const allKeys = await AsyncStorage.getAllKeys();
-      const allData: Record<string, string | null> = {};
-      for (const key of allKeys) {
-        const value = await AsyncStorage.getItem(key);
-        allData[key] = value;
-      }
-      console.log('All data:', allData);
-    } catch (error) {
-      console.error('Error retrieving all data:', error);
-    }
-  };
+  useEffect(() => {
+    const poppedBall = poppedBalloonArray[goal]?.length ?? 0
+    const ball = balloonArray[goal]?.length ?? 0
+    const totalBalloon = poppedBall + ball
+    console.log(poppedBall, ball, totalBalloon)
+
+    setLift((ball / totalBalloon) * 100)
+  }, [data])
+
+
+  console.log(lift, "------------------------------")
+
+  // const getAllData = async () => {
+  //   try {
+  //     const allKeys = await AsyncStorage.getAllKeys();
+  //     const allData: Record<string, string | null> = {};
+  //     for (const key of allKeys) {
+  //       const value = await AsyncStorage.getItem(key);
+  //       allData[key] = value;
+  //     }
+  //     console.log('All data:', allData);
+  //   } catch (error) {
+  //     console.error('Error retrieving all data:', error);
+  //   }
+  // };
 
   const getBalloonColor = (balloon: string) => {
     switch (balloon) {
@@ -62,21 +74,21 @@ const Home = () => {
     }
   }
 
-  const calculateScrollPosition = () => {
-    if (balloonArray[goal] === undefined || balloonArray[goal].length === 0) {
-      return 0;
-    }
-    const maxScroll = 0.95;
-    const scrollPercentage = Math.min(balloonArray[goal].length / 20, maxScroll);
-    return scrollPercentage;
-  }
+  // const calculateScrollPosition = () => {
+  //   if (balloonArray[goal] === undefined || balloonArray[goal].length === 0) {
+  //     return 0;
+  //   }
+  //   const maxScroll = 0.95;
+  //   const scrollPercentage = Math.min(balloonArray[goal].length / 20, maxScroll);
+  //   return scrollPercentage;
+  // }
 
-  useEffect(() => {
-    if (scrollViewRef.current) {
-      const scrollPosition = calculateScrollPosition();
-      scrollViewRef.current.scrollTo({ y: scrollPosition * 1000, animated: true });
-    }
-  }, [balloonArray[goal]]);
+  // useEffect(() => {
+  //   if (scrollViewRef.current) {
+  //     const scrollPosition = calculateScrollPosition();
+  //     scrollViewRef.current.scrollTo({ y: scrollPosition * 1000, animated: true });
+  //   }
+  // }, [balloonArray[goal]]);
 
   useEffect(() => {
     Animated.loop(
@@ -126,17 +138,18 @@ const Home = () => {
   });
  
   return (
-    <View className='flex-1'>
-      <ScrollView 
-        ref={scrollViewRef}
-        bounces={false}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
-        style={{ transform: [{ scaleY: -1 }] }}
-      >
-        <MemoizedBackgroundImage />
-      </ScrollView>
 
+    <ImageBackground
+    source={require('./../../assets/backgroundImgSvgTwo.png')}
+    className='flex-1'
+    resizeMode='cover'>
+
+    <Image 
+    source={require('./../../assets/foregroundImg.png')}
+    className="h-[96%] w-[200%] absolute top-[40%] self-center"
+    resizeMode='contain'
+    />
+    
       <View className='absolute w-full'>
         <View className='mt-5'>
           <View className='flex-row'>
@@ -156,25 +169,37 @@ const Home = () => {
         <Text className='text-2xl font-textFontBase mt-5 italic  text-amber-950 mr-2'>{balloonArray[goal]?.length || 0}</Text>
         <Text className='text-base top-[4%] font-textFontBase mt-5 italic text-amber-950 '>Habit Completions</Text>
       </View>
-      {balloonArray[goal]?.length > 0 ?(
-      <View className='absolute bottom-[21%] z-11 self-center rounded-full'>
+      <View className='absolute top-[20%] self-start ml-5 flex-row '>
+      <Text className='text-2xl font-textFontBase mt-5 italic  text-red-600 mr-2'>{poppedBalloonArray[goal]?.length || 0}</Text>
+        <Text className='text-base top-[4%] font-textFontBase mt-5 italic text-red-600 '>Habit Pops</Text>
+      </View>
+      <View className='absolute top-[25%] self-start ml-5 flex-row '>
+      <Text className={`text-2xl font-textFontBase mt-5 italic ${lift >= 80 ? "text-green-500" : "text-red-600"}  mr-2`}>{lift}%</Text>
+        <Text className='text-sm top-[4%] font-textFontBase mt-3 italic text-amber-950 opacity-80 '>Happy pug with 80% {">="} complition rate</Text>
+      </View>
+      {lift > 80 ?(
+      <View className='absolute bottom-[28%] z-11 self-center rounded-full'>
         <BalloonString height={100} width={100} />       
       </View>
       ) : null}
-       {balloonArray[goal]?.length > 0 ?(
-      <View className='absolute bottom-[23%] self-center  z-11 '>
+       {lift  > 80 ?(
+      <View className='absolute bottom-[30%] self-center  z-11 '>
           <DogBalloonSvg height={calculateBalloonSize()} width={calculateBalloonSize()} />
-          {/* <DoggoSvg width={40} height={40}/> */}
+          
       </View>
          ) : null}
-
-
-          <View className='absolute  self-center top-[78%] '>
-        <DoggoSvg width={40} height={40}/>
+        {lift > 80 ? (
+          <View className='absolute  self-center top-[71%] '>
+              <DoggoSvg width={40} height={40}/>
           </View>
+          ) : (
+            <View className='absolute  self-center top-[81%] '>
+              <DoggoSvg width={40} height={40}/>
+            </View>
+          )}
         
-   
-    </View>
+    </ImageBackground>
+    // {/* </View> */}
   );
 };
 

@@ -16,7 +16,7 @@ const DogBalloonSvg: React.FC<DogBalloonSvgProps> = ({ width = 800, height = 800
 
 
   return (
-    <Svg width={width} height={height} viewBox="10 1.5 44 46" {...props}>
+    <Svg width={width} height={height} viewBox="9 1.5 44 46" {...props}>
      
         <Path 
           d="M52 22.5c0 11.3-8.8 24.4-19.8 24.4c-10.9 0-19.8-13-19.8-24.4C12.5 11.2 21.3 2 32.2 2C43.2 2 52 11.2 52 22.5" 

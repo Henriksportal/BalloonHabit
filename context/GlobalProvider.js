@@ -11,6 +11,7 @@ const GlobalProvider = ({ children }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [balloonArray, setBalloonArray] = useState([])
+    const [poppedBalloonArray, setPoppedBalloonArray] = useState([])
     const [poppedCount, setPoppedCount] = useState(1)
 
 
@@ -66,9 +67,10 @@ const GlobalProvider = ({ children }) => {
       try {
         //console.log(habitData, "helloo data???", habitData.length !== 0)
         if (habitData.length !== 0) { 
-          const updatedData = habitData.map((habit: Habit) => {
+          const updatedData = habitData.map((habit) => {
             
             if (popCalculator(habit)) {
+              updatePoppedBalloons(habit.description)
               console.log("is this the case", poppedCount)
               return {
                 ...habit,
@@ -96,10 +98,32 @@ const GlobalProvider = ({ children }) => {
         setLoading(false);
       }
     }
-    
-    
 
 
+    const updatePoppedBalloons = async (description) => {
+      try {
+  
+        const poppedBalloonsString = await AsyncStorage.getItem('PoppedBalloons');
+        let Poppedballoons = poppedBalloonsString ? JSON.parse(poppedBalloonsString) : {};
+    
+        if (!Poppedballoons[goal]) {
+          Poppedballoons[goal] = [];
+        }
+  
+        // balloons[goal].push(type);
+        Poppedballoons[goal].push({
+          type: type,
+          description: description
+      });
+      
+        await AsyncStorage.setItem('Balloons', JSON.stringify(Poppedballoonsballoons));
+        console.log(`Updated Balloons: ${JSON.stringify(Poppedballoons)}`);
+      } catch (error) {
+        console.error('Error updating Balloons:', error);
+      }
+    };
+
+  
     const getData = async () => {
       setLoading(true);
       try {
@@ -124,25 +148,41 @@ const GlobalProvider = ({ children }) => {
     const fetchBalloons = async () => {
       try {
         const balloonsString = await AsyncStorage.getItem('Balloons');
+      
         if (balloonsString !== null) {
           const balloons = JSON.parse(balloonsString);
           setBalloonArray(balloons);
         }
+
       } catch (error) {
         console.error('Error retrieving balloons:', error);
       }
     };
 
+    const fetchPoppedBalloons = async () => {
+      try {
+        const PoppedballoonsString = await AsyncStorage.getItem('PoppedBalloons');
+
+        if (PoppedballoonsString !== null) {
+          const poppedBalloons = JSON.parse(PoppedballoonsString)
+          setPoppedBalloonArray(poppedBalloons)
+        }
+      } catch (error) {
+        console.error('Error retrieving PoppedBalloons:', error);
+      }
+    };
+
     useEffect(() => {
-      getData()
+      getData();
       refetchBalloon();
+      fetchPopped();
       
       
     }, [])
 
     const refetch = () => getData();
     const refetchBalloon = () => fetchBalloons();
-    const reCheckPopped = () => checkPop();
+    const fetchPopped = () => fetchPoppedBalloons();
 
     return (
         <GlobalContext.Provider
@@ -154,6 +194,7 @@ const GlobalProvider = ({ children }) => {
             refetch, 
             loading, 
             balloonArray, 
+            poppedBalloonArray,
             refetchBalloon,
             checkPop
           }}

@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity, ScrollView, Animated, Easing, TextInput, Alert } from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity , Animated, Easing, TextInput, Alert, ImageBackground } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import BalloonSvg from '../../assets/svg/BalloonSvg';
@@ -9,7 +9,9 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import BasketBalloonSvg from '@/assets/svg/BasketBalloonSvg';
 import HeaderBalloonSvg from '@/assets/svg/HeaderBalloonSvg';
 
-import BasketBalloonNoRope from '@/assets/svg/BasketBalloonNoRope';
+import HeaderBalloonSvgTwo from '@/assets/svg/HeaderBalloonSvgTwo';
+
+HeaderBalloonSvgTwo
 
 
 
@@ -149,14 +151,12 @@ const CreateHabit = () => {
   };
 
   return (
-    <View className='flex-1'>
-      {/* BackGround Image  */}
-      <ScrollView bounces={false}
-      style={{ transform: [{ scaleY: -1 }] }}
-      showsVerticalScrollIndicator={false}>
-        <MemoizedBackgroundImage />
-      </ScrollView>
-      {/* BackGround Image End */}
+    
+         <ImageBackground
+    source={require('./../../assets/backgroundsvg.png')}
+    className='flex-1'
+    resizeMode='cover'>
+
       {/* Header Text  */}
 
             <View className='absolute w-full'>
@@ -184,10 +184,10 @@ const CreateHabit = () => {
             <TouchableOpacity key={type} onPress={() => handleBalloonPress(type)} className='items-center'>
               <Text className={`font-fatFont text-${getBalloonColor(type, true)} ${selectedBalloon === type ? null: 'opacity-40'} ` }>{type}</Text>
               {selectedBalloon === type ? (
-                <BasketBalloonNoRope ropeAnimation={ropeAnimation} style={{ width: 100, height: 100}}  color={getBalloonColor(type, false)} />
+                <HeaderBalloonSvgTwo style={{ width: 100, height: 100}}  mainColor={getBalloonColor(type, false)} />
               ) : (
                 <View style={{ borderRadius: 50, overflow: 'hidden' }} className='opacity-40'>
-                  <BasketBalloonNoRope ropeAnimation={ropeAnimation} style={{ width: 100, height: 100 }} color={getBalloonColor(type, false)} />
+                  <HeaderBalloonSvgTwo style={{ width: 100, height: 100 }} mainColor={getBalloonColor(type, false)} />
                 </View>
               )}
             </TouchableOpacity>
@@ -221,7 +221,7 @@ const CreateHabit = () => {
           </View>
         )}
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 
