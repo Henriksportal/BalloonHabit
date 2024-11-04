@@ -98,21 +98,6 @@ const Progress = () => {
     source={require('./../../assets/backgroundsvg.png')}
     className='flex-1'
     resizeMode='cover'>
-     {/* <View className='flex-1'> */}
-      {/* BackGround Image  */}
-      {/* <ScrollView 
-        bounces={false}
-        style={{ transform: [{ scaleY: -1 }] }}
-        showsVerticalScrollIndicator={false}
-      >
-        <Image
-          style={{ transform: [{ scaleY: -1 }], flex: 1 }}
-          source={require('../../assets/photo2.png')}
-          className="bottom-10 right-80 flex-1"
-          resizeMode='cover'
-        />
-      </ScrollView> */}
-      {/* BackGround Image End */}
 
       {/* Header Text  */}
       <View className='absolute w-[100%]'>
@@ -131,12 +116,12 @@ const Progress = () => {
         {/* New Text components */}
         <View className='flex-row w-full justify-center mt-5 absolute top-[95%] '>
           <TouchableOpacity className='w-[30%] self-center m-4' onPress={handleDailyPress}>
-            <View className={`   ${dailyPress ? "opacity-100 border-b-4 border-amber-950 rounded-full" : ""} rounded-lg`}>
+            <View className={`   ${dailyPress ? "opacity-100  border-amber-950 rounded-full" : ""} rounded-lg`}>
               <Text className={`p-1 text-base  text-center font-fatFont ${dailyPress ? 'text-amber-950' : 'text-orange-200'}`}>This Week</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity className='w-[30%] self-center m-4' onPress={handleWeeklyPress}>
-            <View className={` ${weeklyPress ? "opacity-100 border-b-4 border-amber-950 rounded-full" : ""} rounded-lg`}>
+            <View className={` ${weeklyPress ? "opacity-100  border-amber-950 rounded-full" : ""} rounded-lg`}>
               <Text className={`p-1 text-base  text-center font-fatFont ${weeklyPress ? 'text-amber-950' : 'text-orange-200'}`}>All</Text>
             </View>
           </TouchableOpacity>

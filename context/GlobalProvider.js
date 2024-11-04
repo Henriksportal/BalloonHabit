@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import {isToday, differenceInDays ,startOfWeek, isYesterday, subWeeks, endOfWeek, subMonths, endOfMonth, parseISO } from 'date-fns';
+import {isToday, isBefore, subDays,  differenceInDays ,startOfWeek, isYesterday, subWeeks, endOfWeek, subMonths, endOfMonth, parseISO, startOfMonth } from 'date-fns';
 
 const GlobalContext = createContext();
 
@@ -11,67 +11,101 @@ const GlobalProvider = ({ children }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [balloonArray, setBalloonArray] = useState([])
-    const [poppedBalloonArray, setPoppedBalloonArray] = useState([])
     const [poppedCount, setPoppedCount] = useState(1)
 
 
     const popCalculator = (habit) => {
 
-      if (isToday(habit.lastPoppedDate)) return false;
+      const today = new Date();
+      const yesterday = subDays(new Date(), 1);
       
+      const lastPoppedDate = habit.lastPoppedDate
+      ? parseISO(habit.lastPoppedDate)
+      : parseISO(habit.startDate);
+      
+      setPoppedCount(0)
+     
+      
+      if (isToday(lastPoppedDate)) return false;
+    
         try {
-          const today = new Date()
-          setPoppedCount(0)
-          const lastCompletedDate = habit.lastCompletedDate
-          ? parseISO(habit.lastCompletedDate)
-          : parseISO(habit.startDate);
+     
         
+        
+          
+          
           switch (habit.type) {
             case 'Daily':
-              console.log("am i here check 2", isYesterday(lastCompletedDate))
-              setPoppedCount(
-                habit.lastPoppedDate ? differenceInDays(today, habit.lastPoppedDate) : 1
-              );
-              return isYesterday(lastCompletedDate);
+
+              if (isToday(lastPoppedDate)) return false;
+
+              const lastCompletedDate = habit.lastCompletedDate
+              ? parseISO(habit.lastCompletedDate)
+              : subDays(parseISO(habit.startDate), 1);
+
+              setPoppedCount(differenceInDays(today, lastPoppedDate));
+              return !(isYesterday(lastCompletedDate));
+             
 
       
             case 'Weekly': {
+
+              const startOfThisWeek = startOfWeek(today, { weekStartsOn: 0 });
+              const endOfThisWeek = endOfWeek();
+
+              if (lastPoppedDate >= startOfThisWeek && lastPoppedDate <= endOfThisWeek) return false;
+
+              const lastCompletedDate = habit.lastCompletedDate
+              ? parseISO(habit.lastCompletedDate)
+              : subWeeks(parseISO(habit.startDate), 1);
+
               const lastWeekStart = startOfWeek(subWeeks(today, 1), { weekStartsOn: 0 });
               const lastWeekEnd = endOfWeek(lastWeekStart);
+              const startWeek = startOfWeek(today)
               setPoppedCount(
-                habit.lastPoppedDate ? differenceInDays(today, habit.lastPoppedDate) : 1
+                differenceInDays(today, lastPoppedDate)
               );
-              return lastCompletedDate >= lastWeekStart && lastCompletedDate <= lastWeekEnd;
+              return !(lastCompletedDate >= lastWeekStart && lastCompletedDate <= lastWeekEnd);
+             
             }
       
             case 'Monthly': {
+
+              const startOfThisMonth = startOfMonth(today);
+              const endOfThisMonth = endOfWeek(startOfThisMonth);
+
+              if (lastPoppedDate >= startOfThisMonth && lastPoppedDate <= endOfThisMonth) return false;
+
+
+
+              const lastCompletedDate = habit.lastCompletedDate
+              ? parseISO(habit.lastCompletedDate)
+              : subMonths(parseISO(habit.startDate), 1);
+
               const lastMonthStart = subMonths(new Date(), 1);
               const lastMonthEnd = endOfMonth(lastMonthStart);
-              setPoppedCount(
-                habit.lastPoppedDate ? differenceInDays(today, habit.lastPoppedDate) : 1
-              );
-              return lastCompletedDate >= lastMonthStart && lastCompletedDate <= lastMonthEnd;
+              const startMonth = startOfMonth(today)
+              setPoppedCount(differenceInDays(today, lastPoppedDate));
+              return !(lastCompletedDate >= lastMonthStart && lastCompletedDate <= lastMonthEnd);
+              
             }
       
             default:
-              console.log("am i here check 1")
               return false;
           }
         } catch (error) {
-          
-          return false;
+          console.log('here wrong', error)
         }
     };
 
     const checkPop = async(habitData) => {
       try {
-        //console.log(habitData, "helloo data???", habitData.length !== 0)
+      
         if (habitData.length !== 0) { 
           const updatedData = habitData.map((habit) => {
             
             if (popCalculator(habit)) {
-              updatePoppedBalloons(habit.description)
-              console.log("is this the case", poppedCount)
+              
               return {
                 ...habit,
                 status: false,
@@ -79,15 +113,17 @@ const GlobalProvider = ({ children }) => {
                 lastPoppedDate: new Date().toISOString(),
               };
             } else {
-              console.log("here returning ", habit)
+              //console.log("condition was false", habit.description)
               return habit;
             }
           
           });   
-         
+          
           setData(updatedData);
           await AsyncStorage.setItem('habits', JSON.stringify(updatedData));
           refetchBalloon();
+        
+          
       } else {
         console.log('no Data!')
       }
@@ -100,28 +136,6 @@ const GlobalProvider = ({ children }) => {
     }
 
 
-    const updatePoppedBalloons = async (description) => {
-      try {
-  
-        const poppedBalloonsString = await AsyncStorage.getItem('PoppedBalloons');
-        let Poppedballoons = poppedBalloonsString ? JSON.parse(poppedBalloonsString) : {};
-    
-        if (!Poppedballoons[goal]) {
-          Poppedballoons[goal] = [];
-        }
-  
-        // balloons[goal].push(type);
-        Poppedballoons[goal].push({
-          type: type,
-          description: description
-      });
-      
-        await AsyncStorage.setItem('Balloons', JSON.stringify(Poppedballoonsballoons));
-        console.log(`Updated Balloons: ${JSON.stringify(Poppedballoons)}`);
-      } catch (error) {
-        console.error('Error updating Balloons:', error);
-      }
-    };
 
   
     const getData = async () => {
@@ -158,31 +172,15 @@ const GlobalProvider = ({ children }) => {
         console.error('Error retrieving balloons:', error);
       }
     };
-
-    const fetchPoppedBalloons = async () => {
-      try {
-        const PoppedballoonsString = await AsyncStorage.getItem('PoppedBalloons');
-
-        if (PoppedballoonsString !== null) {
-          const poppedBalloons = JSON.parse(PoppedballoonsString)
-          setPoppedBalloonArray(poppedBalloons)
-        }
-      } catch (error) {
-        console.error('Error retrieving PoppedBalloons:', error);
-      }
-    };
-
+  
     useEffect(() => {
       getData();
       refetchBalloon();
-      fetchPopped();
-      
-      
     }, [])
 
     const refetch = () => getData();
     const refetchBalloon = () => fetchBalloons();
-    const fetchPopped = () => fetchPoppedBalloons();
+    
 
     return (
         <GlobalContext.Provider
@@ -194,7 +192,6 @@ const GlobalProvider = ({ children }) => {
             refetch, 
             loading, 
             balloonArray, 
-            poppedBalloonArray,
             refetchBalloon,
             checkPop
           }}

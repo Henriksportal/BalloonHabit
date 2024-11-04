@@ -3,14 +3,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'expo-router';
 import { router } from 'expo-router';
 
-import { MemoizedBackgroundImage } from '../../assets/MemoizedImage';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RenderHabits from '../../components/RenderHabits';
 import { useGlobalContext } from "../../context/GlobalProvider";
 import RenderHabitAlter from '../../components/RenderHabitAlter';
 import { format, isToday, startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO } from 'date-fns';
-import HeaderBalloonSvg from '@/assets/svg/HeaderBalloonSvg';
-import CountdownCheck from '@/components/CountdownCheck';
+import HeaderBalloonSvg from '../../assets/svg/HeaderBalloonSvg';
+
 
 
 
@@ -155,7 +155,7 @@ const Checklist = () => {
 
 
 
-  const isLastCompletedInTimeframe = (item) => {
+  const isLastCompletedInTimeframe = (item: Habit) => {
 
     if (!item?.lastCompletedDate) return false;
     
@@ -217,10 +217,10 @@ const Checklist = () => {
           </TouchableOpacity>
           
         </View>
-      );
+      );  
     } else if (editPress) {
       return (
-        <View className=''>
+        <View>
          <View className={`rounded-2xl ml-2 mr-2 shadow-md p-4 mb-4  flex-row ${balloonColor} `}>
             <RenderHabitAlter data={item} onDelete={() => handleDelete(item.id)} />
           </View>
@@ -235,13 +235,6 @@ const Checklist = () => {
     source={require('./../../assets/backgroundsvg.png')}
     className='flex-1'
     resizeMode='cover'>
-      {/* BackGround Image  */}
-      {/* <ScrollView bounces={false}
-      style={{ transform: [{ scaleY: -1 }] }}
-      showsVerticalScrollIndicator={false}>
-        <MemoizedBackgroundImage />
-      </ScrollView> */}
-      {/* BackGround Image End */}
 
       {/* Header Text  */}
       <View className='absolute w-full'>
@@ -275,17 +268,17 @@ const Checklist = () => {
         <View className='flex-row w-full justify-center mt-5 absolute top-40'>
         
           <TouchableOpacity className='w-[25%] self-center m-2' onPress={handleDailyPress}>
-              <View className={`  ${dailyPress ?  "  opacity-100 border-b-4 border-daily rouned-full": "opacity-20"} rounded-lg`}>
+              <View className={`  ${dailyPress ?  "  opacity-100 bg-sky-400  border-daily rouned-full": "opacity-20"} rounded-lg`}>
                 <Text className='p-1 text-base text-center font-fatFont text-daily'>Daily</Text>
               </View>
           </TouchableOpacity>
           <TouchableOpacity className='w-[25%] self-center m-2' onPress={handleWeeklyPress}>
-              <View className={`  ${weeklyPress ? "  opacity-100  border-b-4 border-weekly rouned-full": "opacity-20"} rounded-lg`}>
+              <View className={`  ${weeklyPress ? "  opacity-100  bg-sky-400 border-weekly rouned-full": "opacity-20"} rounded-lg`}>
                 <Text className='p-1 text-base text-center font-fatFont text-weekly' >Weekly</Text>
               </View>
           </TouchableOpacity>
           <TouchableOpacity className='w-[25%] self-center m-2' onPress={handleMonthlyPress}>
-              <View className={` ${monthlyPress ? " opacity-100  border-b-4 border-monthly rouned-full": "opacity-20"} rounded-lg`}>
+              <View className={` ${monthlyPress ? " opacity-100  bg-sky-400 border-monthly rouned-full": "opacity-20"} rounded-lg`}>
                 <Text className='p-1 text-base text-center font-fatFont text-monthly'>Monthly</Text>
               </View>
           </TouchableOpacity>
@@ -293,7 +286,7 @@ const Checklist = () => {
      
         </View>
         
-        <Animated.View className="h-[200%] w-full absolute top-[120%] self-center mt-10">
+        <Animated.View className="h-[250%] w-full absolute top-[120%] self-center mt-10">
         <FlatList
             data={data}
             renderItem={({ item }) => {

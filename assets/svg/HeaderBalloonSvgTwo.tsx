@@ -46,18 +46,19 @@ const HeaderBalloonSvgTwo: React.FC<HeaderBalloonSvgTwoProps> = ({ style, mainCo
       <Path
         d="M31.5 49c0-.1 0 0 0 0"
         fill="#94989b"
+        
       />
       <Path
         d="M30.8 48h2.9c.9 0 .9-1.3 0-1.3h-2.9c-.9.1-.9 1.3 0 1.3"
         fill="#2a2a2a"
         stroke="black"
-        strokeWidth={1}
+        strokeWidth={0.1}
       />
       <Path
         d="M30.1 50h4.3c1.4 0 1.4-1.9 0-1.9h-4.3c-1.4-.1-1.4 1.9 0 1.9"
         fill={mainColor}
         stroke="black"
-        strokeWidth={0.5}
+        strokeWidth={0.1}
       />
     </AnimatedSvg>
   );

@@ -4,14 +4,14 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import BalloonSvg from '../../assets/svg/BalloonSvg';
 import { BlurView } from 'expo-blur';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MemoizedBackgroundImage } from '../../assets/MemoizedImage';
+
 import { useGlobalContext } from "../../context/GlobalProvider";
-import BasketBalloonSvg from '@/assets/svg/BasketBalloonSvg';
-import HeaderBalloonSvg from '@/assets/svg/HeaderBalloonSvg';
+import BasketBalloonSvg from '../../assets/svg/BasketBalloonSvg';
+import HeaderBalloonSvg from '../../assets/svg/HeaderBalloonSvg';
 
-import HeaderBalloonSvgTwo from '@/assets/svg/HeaderBalloonSvgTwo';
+import HeaderBalloonSvgTwo from '../../assets/svg/HeaderBalloonSvgTwo';
 
-HeaderBalloonSvgTwo
+
 
 
 
@@ -152,10 +152,10 @@ const CreateHabit = () => {
 
   return (
     
-         <ImageBackground
-    source={require('./../../assets/backgroundsvg.png')}
-    className='flex-1'
-    resizeMode='cover'>
+    <ImageBackground
+      source={require('./../../assets/backgroundsvg.png')}
+      className='flex-1'
+      resizeMode='cover'>
 
       {/* Header Text  */}
 
@@ -182,7 +182,9 @@ const CreateHabit = () => {
         <View className='flex-row justify-between'>
           {(['Daily', 'Weekly', 'Monthly'] as const).map((type) => (
             <TouchableOpacity key={type} onPress={() => handleBalloonPress(type)} className='items-center'>
+              <View className={`${selectedBalloon === type ? 'rounded-lg pl-4 pr-4 bg-sky-400' : null}`}>
               <Text className={`font-fatFont text-${getBalloonColor(type, true)} ${selectedBalloon === type ? null: 'opacity-40'} ` }>{type}</Text>
+              </View>
               {selectedBalloon === type ? (
                 <HeaderBalloonSvgTwo style={{ width: 100, height: 100}}  mainColor={getBalloonColor(type, false)} />
               ) : (
@@ -206,10 +208,10 @@ const CreateHabit = () => {
             />  
             <Text className='mt-10  italic font-textFontBase text-amber-950 opacity-80'>When do you want to start tracking the habit?</Text>
             <View className='mt-5 flex-row pb-5'>
-              <TouchableOpacity onPress={handleSelectorPress} className={`ml-12 mt-5 p-2 rounded-lg ${buttonSelectedToday ? `border-4 border-amber-950` : null } black`}>
+              <TouchableOpacity onPress={handleSelectorPress} className={`ml-12 mt-5 p-2 rounded-lg ${buttonSelectedToday ? `  bg-sky-400` : null } black`}>
                 <Text className={`${buttonSelectedToday ? "font-textFontBase" : null } font-textFontBase text-amber-950`}> Today</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={handleSelectorPressTwo} className={`ml-10 mt-5 p-2 rounded-lg  border-black ${buttonSelectedNext ? "border-4 border-amber-950" : null }`}>
+              <TouchableOpacity onPress={handleSelectorPressTwo} className={`ml-10 mt-5 p-2 rounded-lg  border-black ${buttonSelectedNext ? "  bg-sky-400" : null }`}>
                 <Text className={`${!buttonSelectedToday ? "font-textFontBase" : null } font-textFontBase text-amber-950`}>{selectedBalloonButton}</Text>
               </TouchableOpacity>
             </View>
